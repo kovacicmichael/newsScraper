@@ -1,0 +1,49 @@
+/*body{
+	background-color: red;
+}*/
+body{
+	background-color: #DADDD8;
+
+}
+
+
+.navbar{
+	min-height: 70px;
+	padding: 10px 15px;
+  	height: 70px;
+  	line-height: 70px;
+  	background-color: #ACAFAE;
+  	margin-bottom: 0;
+  	border: none;
+}
+
+.navbar-default .navbar-nav>li>a{
+	color: #C7D59F;
+
+}
+
+.navbar-default .navbar-brand{
+
+}
+
+/*.navbar-header{
+	padding: 10px 15px;
+  	height: 70px;
+  	line-height: 70px;
+}*/
+
+
+.jumbotron{
+	
+	background-image: url("../images/denny-muller-534086-unsplash.jpg");
+	background-size: cover;
+	min-height: 500px;
+	margin-top: -10;
+	border: solid 5px;
+	color: white;
+	border-color:#2F3232;
+}
+
+.container{
+	text-align: center;
+}
