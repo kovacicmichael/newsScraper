@@ -47,3 +47,21 @@ body{
 .container{
 	text-align: center;
 }
+
+.articleDiv{
+	position: relative;
+}
+#save{
+
+	position:absolute;
+	margin:auto;
+	right:20px;
+	top:auto;
+
+}
+
+
+
+
+
+
