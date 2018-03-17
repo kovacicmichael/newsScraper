@@ -1,6 +1,7 @@
 
 var request = require('request');
 var cheerio = require("cheerio");
+var mongoose = require("mongoose");
 
 // Use mongojs to hook the database to the db variable
 var db = require("./../models");
@@ -8,7 +9,7 @@ var db = require("./../models");
 module.exports = function(app){
 
 
-app.get("/scrape", function(req, res){
+app.get("/", function(req, res){
 	
 	var results =[];
 
@@ -55,12 +56,32 @@ app.get("/scrape", function(req, res){
 		});
 
 	console.log("end of route")
-
-	
-
 })
 
+app.post("/newArticle", function(req, res){
+	console.log("-----------------------------------------")
+	console.log(req.body)
 
+	db.Article.create(req.body)
+		.then(function(dbArticle){
+			console.log("Article Saved!")
+			console.log(dbArticle)
+		})
+		.catch(function(err){
+			console.log(err)
+		})
+})
+
+//will render all of the saved articles
+app.get("/savedArticles", function(req, res) {
+  db.Article.find({})
+  .then(function(dbArticle){
+      res.json(dbArticle);
+    }).catch(function(error){
+      console.log(error)
+    })
+
+  })
 
 
 
