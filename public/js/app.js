@@ -1,17 +1,23 @@
 
-$(document).ready(function(){
 
-		console.log("here")
+	$(document).ready(function(){
 
-		$.getJSON("/", function(data){
-				//renderArticles(data);
+			console.log("here")
 
-			}).then(function(data){
-			console.log(data);
-			renderArticles(data);
-		})
-})
+			$.getJSON("/scrape", function(data){
 
+				}).then(function(data){
+				console.log(data);
+				renderArticles(data);
+			})
+	})
+
+
+// if (window.location.pathname === 'http://localhost:3000/savedArticles') {
+
+
+
+// }
 
 
 	$("#scrape").on("click", function(){
@@ -19,7 +25,7 @@ $(document).ready(function(){
 		$(".article-container").empty();
 		console.log("here")
 
-		$.getJSON("/", function(data){
+		$.getJSON("/scrape", function(data){
 				//renderArticles(data);
 
 			}).then(function(data){
@@ -34,7 +40,7 @@ $(document).ready(function(){
 		$(".article-container").empty();
 		console.log("here")
 
-		$.getJSON("/", function(data){
+		$.getJSON("/scrape", function(data){
 				//renderArticles(data);
 
 			}).then(function(data){
@@ -60,15 +66,19 @@ $(document).ready(function(){
 		})
 	})
 
-	$("#savedArticles").on("click", function(){
+	// $("#savedArticles").on("click", function(){
+	// 	console.log("savedArticles")
 
-		$.getJSON("/savedArticles", function(data){
+	// 	// $.ajax({
+	// 	// 	url:"/savedArticles",
+	// 	// 	method:"GET",
+	// 	// }).then(function(){
 
-		}).then(function(data){
-			renderSavedArticles(data);
-		})
 
-	})
+	// 	// })
+		
+
+	// })
 
 
 

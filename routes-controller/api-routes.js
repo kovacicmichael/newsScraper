@@ -9,7 +9,7 @@ var db = require("./../models");
 module.exports = function(app){
 
 
-app.get("/", function(req, res){
+app.get("/scrape", function(req, res){
 	
 	var results =[];
 
@@ -73,7 +73,8 @@ app.post("/newArticle", function(req, res){
 })
 
 //will render all of the saved articles
-app.get("/savedArticles", function(req, res) {
+app.get("/articlesdb", function(req, res) {
+	console.log("svaed articles backend")
   db.Article.find({})
   .then(function(dbArticle){
       res.json(dbArticle);
