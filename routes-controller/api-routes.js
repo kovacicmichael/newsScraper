@@ -62,14 +62,33 @@ app.post("/newArticle", function(req, res){
 	console.log("-----------------------------------------")
 	console.log(req.body)
 
-	db.Article.create(req.body)
-		.then(function(dbArticle){
-			console.log("Article Saved!")
-			console.log(dbArticle)
-		})
-		.catch(function(err){
-			console.log(err)
-		})
+	savedArray = [];
+
+	db.Article.find({})
+  	.then(function(dbArticle){
+  		console.log(dbArticle)
+  		console.log(req.body.title)
+  		dbArticle.forEach(function(element){
+  			savedArray.push(element.title);
+  		})
+  	}).then(function(){
+  		console.log(savedArray)
+  		if(!savedArray.includes(req.body.title)){
+  			db.Article.create(req.body)
+				.then(function(dbArticle){
+					console.log("Article Saved!")
+					console.log(dbArticle)
+					res.send(true);
+				})
+				.catch(function(err){
+					console.log(err)
+				})
+  		}else{
+			res.send(false);
+		}
+    }).catch(function(error){
+      console.log(error)
+    })	
 })
 
 //will render all of the saved articles
@@ -84,7 +103,17 @@ app.get("/articlesdb", function(req, res) {
 
   })
 
+app.delete("/deleteArticle", function(req, res){
+	console.log("here")
+	console.log(req.body);
 
+	db.Article.findByIdAndRemove(req.body.id, function(error, result){
+		if (error) return res.status(500).send(error);
+
+		return res.send(true);
+	})
+
+})
 
 
 

@@ -62,36 +62,13 @@
 		    }
 		}).then(function(data){
 
-			alert("article was saved")
+			if(data == true){
+				alert("Article saved!")
+			}else{
+				alert("Article was already saved!")
+			}
 		})
 	})
-
-	// $("#savedArticles").on("click", function(){
-	// 	console.log("savedArticles")
-
-	// 	// $.ajax({
-	// 	// 	url:"/savedArticles",
-	// 	// 	method:"GET",
-	// 	// }).then(function(){
-
-
-	// 	// })
-		
-
-	// })
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 function renderArticles(data){
@@ -117,33 +94,7 @@ function renderArticles(data){
 		console.log("function complete")
 }
 
-function renderSavedArticles(data){
 
-	console.log("here saved Article")
-
-	$(".savedArticle-container").empty();
-
-	data.forEach(function(data){
-
-		var articleDiv = $("<div>");
-		articleDiv.addClass("well");
-		articleDiv.addClass("articleDiv")
-		articleDiv.append("<a href=" + data.link + " target='_blank' id=title>" + data.title + "</a>");
-		if(data.description != ""){
-			articleDiv.append("<p id=description>" + data.description + "</p>");
-		}
-		articleDiv.append("<button id=delete>Delete From Saved</button>")
-		articleDiv.append("<button id=note>Article Notes</button>")
-
-		$(".savedArticle-container").append(articleDiv)
-
-		console.log("function complete")
-
-	})
-
-
-
-}
 
 
 
