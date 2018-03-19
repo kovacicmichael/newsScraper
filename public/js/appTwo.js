@@ -54,7 +54,7 @@ $('body').on("click", "#addNote", function(){
 			url:"/newNote",
 			method:"POST",
 			data: {
-		      noteInfo: "test"
+		      noteInfo: $("#noteText").val()
 		    }
 		}).then(function(data){
 
