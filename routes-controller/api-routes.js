@@ -115,6 +115,21 @@ app.delete("/deleteArticle", function(req, res){
 
 })
 
+app.post("/newNote", function(req, res){
+	console.log("newNote")
+	console.log(req.body)
+
+	db.Note.create(req.body)
+		.then(function(dbNote){
+			console.log("note created")
+			console.log(dbNote)
+			res.send(true);
+		})
+		.catch(function(error){
+	      console.log(error)
+	    })
+})
+
 
 
 

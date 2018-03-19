@@ -7,9 +7,11 @@ $(document).ready(function(){
 	}).then(function(data){
 		renderSavedArticles(data);
 	})
+
+	
 })
 
-
+$('#noteModal').modal({ show: false})
 
 $('body').on("click", "#delete", function(){
 	console.log("delete")
@@ -40,9 +42,30 @@ $('body').on("click", "#delete", function(){
 })
 
 
-$('body').on("click", "#delete", function(){
-	$('#exampleModal').modal("show")
-}
+$('body').on("click", "#modal", function(){
+
+	$('#noteModal').modal("show")
+})
+
+
+$('body').on("click", "#addNote", function(){
+
+	$.ajax({
+			url:"/newNote",
+			method:"POST",
+			data: {
+		      noteInfo: "test"
+		    }
+		}).then(function(data){
+
+			if(data == true){
+				alert("Note saved!")
+			}else{
+				alert("Article was already saved!")
+			}
+		})
+
+})
 
 
 
@@ -64,8 +87,8 @@ function renderSavedArticles(data){
 		if(data.description != ""){
 			articleDiv.append("<p id=description>" + data.description + "</p>");
 		}
-		articleDiv.append("<button id=delete>Delete From Saved</button>")
-		articleDiv.append("<button type='button' class='btn btn-primary' data-toggle='modal' data-target='#exampleModal'>Article Notes</button>")
+		articleDiv.append("<button class='btn btn-primary delete' id='delete'>Delete From Saved</button>")
+		articleDiv.append("<button id='modal' type='button' class='btn btn-primary note' data-target='#exampleModal'>Article Notes</button>")
 
 		$(".savedArticle-container").append(articleDiv)
 

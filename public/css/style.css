@@ -60,6 +60,27 @@ body{
 
 }
 
+.btn-primary.delete{
+	margin:5px;
+	position:absolute;
+	right:15px;
+	top:30%;
+}
+
+.btn-primary.note{
+	margin:5px;
+	position:absolute;
+	right:170px;
+	top:30%;
+}
+
+#noteModalLabel{
+	font-size: 30px;
+}
+
+.modal-header{
+	padding-bottom: 0px;
+}
 
 
 
