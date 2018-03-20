@@ -18,7 +18,7 @@ body{
 }
 
 .navbar-default .navbar-nav>li>a{
-	color: #C7D59F;
+	color: white;
 
 }
 
@@ -82,7 +82,24 @@ body{
 	padding-bottom: 0px;
 }
 
+.noteDiv{
+	background-color:white;
+	position: relative;
+}
 
+#noteDelete{
+	position: absolute;
+	margin:auto;
+	right:15px;
+	top:30%;
+	background-color: red;
+	color: white;
+}
+
+.noNoteDiv{
+	text-align: center;
+	background-color: white;
+}
 
 
 

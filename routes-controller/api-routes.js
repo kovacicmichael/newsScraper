@@ -33,19 +33,18 @@ app.get("/scrape", function(req, res){
 			    
 			    // Save these results in an object that we'll push into the results array we defined earlier
 			    //db.scrapedData.find({})
-			    if(title != null && title != "" && link){
-				    results.push({
-				      title: title,
-				      link: link,
-				      description: description
-				    });
-				    // db.Article.create(results)
-				    // 	.then(function(dbArticle){
-				    // 		res.json(dbArticle);
-				    // 	}).catch(function(err) {
-				    //       // If an error occurred, send it to the client
-				    //       return res.json(err);
-				    //     });
+			    let count = 0
+			    if(count < 21){
+				    if(title != null && title != "" && link){
+					    results.push({
+					      title: title,
+					      link: link,
+					      description: description
+					    });
+
+					    count++
+					 
+					}
 				}
 			  });
 
@@ -114,24 +113,54 @@ app.delete("/deleteArticle", function(req, res){
 	})
 
 })
+//routes for the notes.....
 
-app.post("/newNote", function(req, res){
+app.post("/newNote/:id", function(req, res){
 	console.log("newNote")
 	console.log(req.body)
 
 	db.Note.create(req.body)
 		.then(function(dbNote){
-			console.log("note created")
+			console.log(req.params.id)
 			console.log(dbNote)
+			console.log("note created")
 			res.send(true);
+			return db.Article.findOneAndUpdate({ _id: req.params.id }, { $push: { notes: dbNote._id } }, { new: true });
+
 		})
 		.catch(function(error){
 	      console.log(error)
 	    })
 })
 
+app.delete("/deleteNote/:id", function(req, res){
+	console.log("newNote")
+	console.log(req.body)
 
+	db.Note.findByIdAndRemove(req.params.id, function(error, result){
+		if (error) return res.status(500).send(error);
 
+		return res.send(true);
+	})
+})
+
+app.get("/allNotes/:id", function(req, res){
+	console.log("rendering notes")
+	db.Article.findOne({_id: req.params.id})
+		.populate("notes")
+		.then(function(dbArticle){
+			if(dbArticle.notes.length == 0){
+				res.send(false)
+				console.log("false")
+			}else{
+				console.log(dbArticle.notes)
+				res.json(dbArticle.notes)
+			}
+		})
+		.catch(function(error){
+	      console.log(error)
+	    })
+})
 
 
 

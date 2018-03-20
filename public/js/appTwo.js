@@ -20,9 +20,6 @@ $('body').on("click", "#delete", function(){
 			method:"DELETE",
 			data: {
 				id: $(this).parent().attr("data-id"),
-		      	title: $(this).parent().find("a").text(),
-		      	link: $(this).parent().find("a").attr("href"),
-		      	description: $(this).parent().find("p").text()
 		    }
 		}).then(function(data){
 
@@ -37,37 +34,75 @@ $('body').on("click", "#delete", function(){
 				alert("Ooops, something went wrong..")
 			}
 		})
-
-
 })
 
 
 $('body').on("click", "#modal", function(){
+	let thisID = $(this).attr("data-id");
 
 	$('#noteModal').modal("show")
+	$("#addNote").attr("data-id", $(this).attr("data-id"))
+	$("#noteDelete").attr("data-id", $(this).attr("data-id"))
+
+		$.ajax({
+			url:"/allNotes/" + thisID,
+			method:"GET"
+		}).then(function(data){
+
+				renderNotes(data);
+		})
 })
 
 
 $('body').on("click", "#addNote", function(){
 
-	$.ajax({
-			url:"/newNote",
+	let thisID = $(this).attr("data-id");
+	console.log(thisID)
+
+
+		$.ajax({
+			url:"/newNote/" + thisID,
 			method:"POST",
 			data: {
-		      noteInfo: $("#noteText").val()
+		      body: $("#noteText").val(),
 		    }
 		}).then(function(data){
 
 			if(data == true){
-				alert("Note saved!")
+				//alert("Note saved!")
+				$.getJSON("/allNotes/" + thisID, function(data){
+
+				}).then(function(data){
+					console.log("notes RERENDERED")
+					renderNotes(data);
+				})
+				$("#noteText").val("")
+				//$('#noteModal').modal("hide")
 			}else{
 				alert("Article was already saved!")
 			}
 		})
-
 })
 
+$('body').on("click", "#noteDelete", function(){
+	let thisID = $(this).attr("data-id");
+	let articleID = $(this).parent().parent().parent().parent().find(".modal-footer").find("#addNote").attr("data-id");
+	console.log(articleID)
 
+		$.ajax({
+			url:"/deleteNote/" + thisID,
+			method:"DELETE"
+		}).then(function(data){
+				// alert("Note deleted")
+				$.getJSON("/allNotes/" + articleID, function(data){
+
+				}).then(function(data){
+					console.log("notes RERENDERED")
+					renderNotes(data);
+				})
+				//$('#noteModal').modal("hide")
+		})
+})
 
 
 
@@ -88,14 +123,38 @@ function renderSavedArticles(data){
 			articleDiv.append("<p id=description>" + data.description + "</p>");
 		}
 		articleDiv.append("<button class='btn btn-primary delete' id='delete'>Delete From Saved</button>")
-		articleDiv.append("<button id='modal' type='button' class='btn btn-primary note' data-target='#exampleModal'>Article Notes</button>")
+		articleDiv.append("<button id='modal' type='button' class='btn btn-primary note' data-id=" + data._id + " data-target='#exampleModal'>Article Notes</button>")
 
 		$(".savedArticle-container").append(articleDiv)
 
 		console.log("function complete")
 
 	})
-
-
-
 }
+
+function renderNotes(data){
+	$(".noteContainer").empty();
+	if(data === false){
+		console.log("no notes")
+		var noteDiv = $("<div>");
+		noteDiv.addClass("noNoteDiv well");
+		noteDiv.append("<p>There are no notes to display</p>")
+
+		$(".noteContainer").append(noteDiv)
+
+	}else{
+		data.forEach(function(data){
+
+			var noteDiv = $("<div>");
+			noteDiv.addClass("noteDiv well");
+			noteDiv.append("<p>" + data.body + "</p>")
+			noteDiv.append("<button class='delete' data-id=" + data._id + " id='noteDelete'>Delete</button>")
+
+			$(".noteContainer").append(noteDiv)
+			console.log("notes rendered")
+		})
+	}
+}
+
+
+
