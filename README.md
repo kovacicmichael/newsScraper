@@ -10,6 +10,7 @@ newsScraper is a dynamic application built with node.js, express.js, and uses th
 
 ## Link to Deployed Site
 https://stark-caverns-51038.herokuapp.com/
+(due to its free status on Heroku, please allow a few moments for the database to initiate when it first loads the page)
 
 ***
 
