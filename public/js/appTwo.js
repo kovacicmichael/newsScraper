@@ -96,23 +96,32 @@ $('body').on("click", "#noteDelete", function(){
 function renderSavedArticles(data){
 
 	$(".savedArticle-container").empty();
-	//creates new div for each article
 	console.log(data)
-	data.forEach(function(data){
-
+	//creates new div for each article
+	if(data.length == 0){
 		var articleDiv = $("<div>");
 		articleDiv.addClass("well");
-		articleDiv.addClass("articleDiv");
-		articleDiv.attr("data-id", data._id);
-		articleDiv.append("<a href=" + data.link + " target='_blank' id=title>" + data.title + "</a>");
-		if(data.description != ""){
-			articleDiv.append("<p id=description>" + data.description + "</p>");
-		}
-		articleDiv.append("<button class='btn btn-primary delete' id='delete'>Delete From Saved</button>");
-		articleDiv.append("<button id='modal' type='button' class='btn btn-primary note' data-id=" + data._id + " data-target='#exampleModal'>Article Notes</button>");
+		articleDiv.addClass("articleDivEmpty");
+		articleDiv.append("<p>There are no saved articles to display</p>");
 
 		$(".savedArticle-container").append(articleDiv);
-	});
+	}else{
+		data.forEach(function(data){
+
+			var articleDiv = $("<div>");
+			articleDiv.addClass("well");
+			articleDiv.addClass("articleDiv");
+			articleDiv.attr("data-id", data._id);
+			articleDiv.append("<a href=" + data.link + " target='_blank' id=title>" + data.title + "</a>");
+			if(data.description != ""){
+				articleDiv.append("<p id=description>" + data.description + "</p>");
+			}
+			articleDiv.append("<button class='btn btn-primary delete' id='delete'>Delete From Saved</button>");
+			articleDiv.append("<button id='modal' type='button' class='btn btn-primary note' data-id=" + data._id + " data-target='#exampleModal'>Article Notes</button>");
+
+			$(".savedArticle-container").append(articleDiv);
+		});
+	};
 };
 //displays notes in modal
 function renderNotes(data){
