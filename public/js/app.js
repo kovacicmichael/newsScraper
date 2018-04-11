@@ -32,13 +32,20 @@ $("#home").on("click", function(){
 })
 //the 'save article' button
 $('body').on("click", "#save", function(){
+	console.log("click")
+	let title = $(this).parent().find("a").text();
+	let link = $(this).parent().find("a").attr("href");
+	let description = $(this).parent().find("p").text();
+	console.log("title: " + title)
+	console.log("link: " + link);
+	console.log("des: " + description)
 	$.ajax({
 		url:"/newArticle",
 		method:"POST",
 		data: {
-		     title: $(this).parent().find("a").text(),
-		     link: $(this).parent().find("a").attr("href"),
-		     description: $(this).parent().find("p").text()
+		     title: title,
+		     link: link,
+		     description: description
 		   }
 	}).then(function(data){
 		if(data){

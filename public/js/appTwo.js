@@ -20,7 +20,6 @@ $('body').on("click", "#delete", function(){
 		   }
 	}).then(function(data){
 		if(data){
-			alert("Article deleted");
 			//after it is deleted it will reload the div container to reflect the new DB
 			$.getJSON("/articlesdb", function(data){
 
@@ -98,6 +97,7 @@ function renderSavedArticles(data){
 
 	$(".savedArticle-container").empty();
 	//creates new div for each article
+	console.log(data)
 	data.forEach(function(data){
 
 		var articleDiv = $("<div>");

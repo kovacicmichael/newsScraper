@@ -54,6 +54,7 @@ app.post("/newArticle", function(req, res){
   		})
   	}).then(function(){
   		if(!savedArray.includes(req.body.title)){
+  			console.log(req.body)
   			db.Article.create(req.body)
 				.then(function(dbArticle){
 					res.send(true);
