@@ -1,15 +1,15 @@
 # Welcome to newsScraper
-Memory React is a traditional memory game built with React.  The game contains twelve unique images that the user must click.  The goal is to click on each unique image once, with no duplicates.
+newsScraper is a Full Stack application powered by the npm package Cheerio.  Through cheerio it scrapes twenty of the top headline news articles from the New York Times for its users.
 
 ***
 
 ## Overview
-Memory React is a static application dployed here on Git Hub.  On the page load of the application the React state (which populates the header) is set to its default values.  The game commences when the user registers their first click.  On each click the array of images is randomized making it more difficult for the user to recall which of the images had already been clicked.  For each subsequent click that the user registers that was not on an already clicked image the score is increased by one.  If the user clicks on a previously clicked image their current score will be compared to the current high score and will replace it if higher.  The game will then reset itself.
+newsScraper is a dynamic application built with node.js, express.js, and uses the nosql database Mongo.  Powered by cheerio the site scrapes 20 top headline news article from the New York Times.  Using basic CRUD operations, newsScraper allows its user to click a link to the article itself, save the article for viewing later, and leave notes for their thoughts on each specified article.  
 
 ***
 
 ## Link to Deployed Site
-https://kovacicmichael.github.io/memory-react/
+https://stark-caverns-51038.herokuapp.com/
 
 ***
 
@@ -19,12 +19,22 @@ Michael Kovacic
 ***
 
 ## Technologies Used
+* MongoDB
+* Mongoose
+* Node.js
+* Express.js
+* npm packages:
+  * cheerio
+  * body-parser
+  * mongoose
+  * mongojs
 * Javascript
 * HMTL
 * CSS
 * Bootstrap
-* React
-* Git Hub Pages
+
+## Deployment
+* Heroku
 
 ***
 
