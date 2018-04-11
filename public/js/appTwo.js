@@ -1,65 +1,57 @@
+//js file for the article html page
+//on page load it will pull all saved articles from the database
 $(document).ready(function(){
 
-			console.log("here")
-
 	$.getJSON("/articlesdb", function(data){
-
 	}).then(function(data){
+
 		renderSavedArticles(data);
 	})
-
-	
 })
-
-$('#noteModal').modal({ show: false})
-
+//sets the modal default to show manually
+$('#noteModal').modal({ show: false});
+//deletes a saved article
 $('body').on("click", "#delete", function(){
-	console.log("delete")
 	$.ajax({
-			url:"/deleteArticle",
-			method:"DELETE",
-			data: {
-				id: $(this).parent().attr("data-id"),
-		    }
-		}).then(function(data){
+		url:"/deleteArticle",
+		method:"DELETE",
+		data: {
+			id: $(this).parent().attr("data-id"),
+		   }
+	}).then(function(data){
+		if(data){
+			alert("Article deleted");
+			//after it is deleted it will reload the div container to reflect the new DB
+			$.getJSON("/articlesdb", function(data){
 
-			if(data == true){
-				alert("Article deleted")
-				$.getJSON("/articlesdb", function(data){
-
-				}).then(function(data){
+			}).then(function(data){
 					renderSavedArticles(data);
-				})
-			}else{
-				alert("Ooops, something went wrong..")
-			}
-		})
-})
+			});
+		}else{
+			alert("Ooops, something went wrong..")
+		};
+	});
+});
 
-
+//this will open the modal to show the notes for each article
 $('body').on("click", "#modal", function(){
 	let thisID = $(this).attr("data-id");
 
-	$('#noteModal').modal("show")
-	$("#addNote").attr("data-id", $(this).attr("data-id"))
-	$("#noteDelete").attr("data-id", $(this).attr("data-id"))
-
+	$('#noteModal').modal("show");
+	$("#addNote").attr("data-id", $(this).attr("data-id"));
+	$("#noteDelete").attr("data-id", $(this).attr("data-id"));
 		$.ajax({
 			url:"/allNotes/" + thisID,
 			method:"GET"
 		}).then(function(data){
 
 				renderNotes(data);
-		})
-})
+		});
+});
 
-
+//creates a new note for the specified article
 $('body').on("click", "#addNote", function(){
-
 	let thisID = $(this).attr("data-id");
-	console.log(thisID)
-
-
 		$.ajax({
 			url:"/newNote/" + thisID,
 			method:"POST",
@@ -68,50 +60,44 @@ $('body').on("click", "#addNote", function(){
 		    }
 		}).then(function(data){
 
-			if(data == true){
-				//alert("Note saved!")
+			if(data){
+				//will reload the DB with the newly added note
 				$.getJSON("/allNotes/" + thisID, function(data){
 
 				}).then(function(data){
 					console.log("notes RERENDERED")
 					renderNotes(data);
-				})
+				});
 				$("#noteText").val("")
-				//$('#noteModal').modal("hide")
 			}else{
 				alert("Article was already saved!")
-			}
-		})
-})
+			};
+		});
+});
 
 $('body').on("click", "#noteDelete", function(){
 	let thisID = $(this).attr("data-id");
 	let articleID = $(this).parent().parent().parent().parent().find(".modal-footer").find("#addNote").attr("data-id");
-	console.log(articleID)
-
 		$.ajax({
 			url:"/deleteNote/" + thisID,
 			method:"DELETE"
 		}).then(function(data){
-				// alert("Note deleted")
-				$.getJSON("/allNotes/" + articleID, function(data){
+			//recalls the DB after the delete
+			$.getJSON("/allNotes/" + articleID, function(data){
 
-				}).then(function(data){
-					console.log("notes RERENDERED")
-					renderNotes(data);
-				})
+			}).then(function(data){
+				renderNotes(data);
+			});
 				//$('#noteModal').modal("hide")
-		})
-})
+		});
+});
 
 
-
+//displays all of the saved articles
 function renderSavedArticles(data){
 
-	console.log("here saved Article")
-
 	$(".savedArticle-container").empty();
-
+	//creates new div for each article
 	data.forEach(function(data){
 
 		var articleDiv = $("<div>");
@@ -122,39 +108,32 @@ function renderSavedArticles(data){
 		if(data.description != ""){
 			articleDiv.append("<p id=description>" + data.description + "</p>");
 		}
-		articleDiv.append("<button class='btn btn-primary delete' id='delete'>Delete From Saved</button>")
-		articleDiv.append("<button id='modal' type='button' class='btn btn-primary note' data-id=" + data._id + " data-target='#exampleModal'>Article Notes</button>")
+		articleDiv.append("<button class='btn btn-primary delete' id='delete'>Delete From Saved</button>");
+		articleDiv.append("<button id='modal' type='button' class='btn btn-primary note' data-id=" + data._id + " data-target='#exampleModal'>Article Notes</button>");
 
-		$(".savedArticle-container").append(articleDiv)
-
-		console.log("function complete")
-
-	})
-}
-
+		$(".savedArticle-container").append(articleDiv);
+	});
+};
+//displays notes in modal
 function renderNotes(data){
 	$(".noteContainer").empty();
 	if(data === false){
-		console.log("no notes")
 		var noteDiv = $("<div>");
 		noteDiv.addClass("noNoteDiv well");
-		noteDiv.append("<p>There are no notes to display</p>")
+		noteDiv.append("<p>There are no notes to display</p>");
 
-		$(".noteContainer").append(noteDiv)
-
+		$(".noteContainer").append(noteDiv);
 	}else{
 		data.forEach(function(data){
-
 			var noteDiv = $("<div>");
 			noteDiv.addClass("noteDiv well");
-			noteDiv.append("<p>" + data.body + "</p>")
-			noteDiv.append("<button class='delete' data-id=" + data._id + " id='noteDelete'>Delete</button>")
+			noteDiv.append("<p>" + data.body + "</p>");
+			noteDiv.append("<button class='delete' data-id=" + data._id + " id='noteDelete'>Delete</button>");
 
-			$(".noteContainer").append(noteDiv)
-			console.log("notes rendered")
-		})
-	}
-}
+			$(".noteContainer").append(noteDiv);
+		});
+	};
+};
 
 
 

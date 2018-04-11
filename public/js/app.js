@@ -1,108 +1,77 @@
 
+//when the document opens it will scrape the articles from the NY Times
+$(document).ready(function(){
 
-	$(document).ready(function(){
-
-			console.log("here")
-
-			$.getJSON("/scrape", function(data){
-
-				}).then(function(data){
-				console.log(data);
-				renderArticles(data);
-			})
+	$.getJSON("/scrape", function(data){
+	}).then(function(data){
+		//function to render data on page
+		renderArticles(data);
 	})
+})
 
-
-// if (window.location.pathname === 'http://localhost:3000/savedArticles') {
-
-
-
-// }
-
-
-	$("#scrape").on("click", function(){
-
-		$(".article-container").empty();
-		console.log("here")
-
-		$.getJSON("/scrape", function(data){
-				//renderArticles(data);
-
-			}).then(function(data){
-			console.log(data);
-			renderArticles(data);
-		})
-
-	})
-
-	$("#home").on("click", function(){
-
-		$(".article-container").empty();
-		console.log("here")
-
-		$.getJSON("/scrape", function(data){
-				//renderArticles(data);
-
-			}).then(function(data){
-			console.log(data);
-			renderArticles(data);
-		})
-
-	})
-
-	$('body').on("click", "#save", function(){
-
-		$.ajax({
-			url:"/newArticle",
-			method:"POST",
-			data: {
-		      title: $(this).parent().find("a").text(),
-		      link: $(this).parent().find("a").attr("href"),
-		      description: $(this).parent().find("p").text()
-		    }
-		}).then(function(data){
-
-			if(data == true){
-				alert("Article saved!")
-			}else{
-				alert("Article was already saved!")
-			}
-		})
-	})
-
-
-function renderArticles(data){
-
-	console.log("here Json")
-
+//the 'scrape new articles' button
+$("#scrape").on("click", function(){
 	$(".article-container").empty();
 
-	for(var i = 0; i < data.length; i++){
+	$.getJSON("/scrape", function(data){
+	}).then(function(data){
+		
+		renderArticles(data);
+	})
 
+})
+//the 'home' button
+$("#home").on("click", function(){
+	$(".article-container").empty();
+
+	$.getJSON("/scrape", function(data){
+	}).then(function(data){
+	
+		renderArticles(data);
+	})
+})
+//the 'save article' button
+$('body').on("click", "#save", function(){
+	$.ajax({
+		url:"/newArticle",
+		method:"POST",
+		data: {
+		     title: $(this).parent().find("a").text(),
+		     link: $(this).parent().find("a").attr("href"),
+		     description: $(this).parent().find("p").text()
+		   }
+	}).then(function(data){
+		if(data){
+			alert("Article saved!")
+		}else{
+			alert("Article was already saved!")
+		}
+	})
+})
+//renders data onto the page into the article container
+function renderArticles(data){
+
+	//creates a new div for each article scraped
+	for(let i = 0; i < data.length; i++){
 		var articleDiv = $("<div>");
 		articleDiv.addClass("well");
-		articleDiv.addClass("articleDiv")
+		articleDiv.addClass("articleDiv");
 		articleDiv.append("<a href=" + data[i].link + " target='_blank' id=title>" + data[i].title + "</a>");
 		if(data[i].description != ""){
 			articleDiv.append("<p id=description>" + data[i].description + "</p>");
-		}
-		articleDiv.append("<button id=save>Save Article</button>")
+		};
+		articleDiv.append("<button id=save>Save Article</button>");
 
-		$(".article-container").append(articleDiv)
-
-		}
-		console.log("function complete")
-}
+		$(".article-container").append(articleDiv);
+	};
+};
 
 
 
 
 
 
-// $.getJSON("/all", function(data) {
-//   // Call our function to generate a table body
-//   displayResults(data);
-// });
+
 
 
 
