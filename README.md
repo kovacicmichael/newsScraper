@@ -28,6 +28,8 @@ Michael Kovacic
   * body-parser
   * mongoose
   * mongojs
+  * express
+  * path
 * Javascript
 * HMTL
 * CSS
